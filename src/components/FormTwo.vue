@@ -56,7 +56,7 @@
         rules: {
           name: [
             {required: true, message: '请输入医院名称', trigger: 'blur'},
-            {min: 3, max: 30, message: '长度在 3 到 30 个字符', trigger: 'blur'}
+            {min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur'}
           ],
           region: [
             {required: true, message: '请选择您的省份', trigger: 'change'}
@@ -66,15 +66,15 @@
           ],
           man: [
             {required: true, message: '请输入您的姓名', trigger: 'blur'},
-            {min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur'}
+            {min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur'}
           ],
           post: [
             {required: true, message: '请输入您的职位', trigger: 'blur'},
-            {min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur'}
+            {min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur'}
           ],
           phone: [
             {required: true, message: '请输入您的手机号', trigger: 'blur'},
-            {min: 3, max: 15, message: '长度在 3 到 15 个字符', trigger: 'blur'}
+            {min: 2, max: 12, message: '长度在 2 到 12 个字符', trigger: 'blur'}
           ],
         },
         produce: [
