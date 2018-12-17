@@ -91,9 +91,9 @@
         left 50%
         transition: all 280ms ease-in-out;
       .before
-        top 0
+        top -1px
       .after
-        bottom: 0;
+        bottom: -1px;
   .fade-enter-active, .fade-leave-active
     transition: opacity .8s
 
