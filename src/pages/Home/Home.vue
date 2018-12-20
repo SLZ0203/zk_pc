@@ -1,7 +1,8 @@
 <!--首页-->
 <template>
-  <section class="home_wrap">
-    <Logo/>
+  <section class="home_wrap" :style="{backgroundImage:'url('+'http://yixin.581vv.com'+config.background_pic+')'}"
+           v-if="config">
+    <Logo :logoImg="config.logo"/>
     <img src="../../../static/images/标题.png" class="titleImg">
     <div class="btn_wrap">
       <img src="../../../static/images/btn-menu.png" class="menuBtn" @click="isShow=!isShow">
@@ -9,7 +10,7 @@
         <ul class="btn_list" v-show="isShow">
           <li class="btn_item" v-for="(btn, index) in btnList" :key="index" @click="goTo(index)">
             <div class="before"></div>
-            {{btn}}
+            {{btn.name}}
             <div class="after"></div>
           </li>
         </ul>
@@ -18,7 +19,7 @@
     <transition name="fade">
       <div class="code_wrap" v-show="isShow2">
         <div class="top_wrap">
-          <img src="../../../static/images/中科医信二维码.png" alt="">
+          <img :src="'http://yixin.581vv.com'+config.weixin_qr_code" class="wechat">
           <div class="text">
             <p class="p1">关注公众号</p>
             <p class="p2">快速，及时了解
@@ -30,9 +31,7 @@
     </transition>
     <transition name="fade">
       <div class="statement" :class="{left:isShow2}" v-show="isShow1">
-        CopyrightTM2018 SINOMIS. All Rights Reserved
-        <span class="line"></span>
-        京IP备17052614号-2
+        {{config.record_info}}
         <div class="sanjiao"></div>
       </div>
     </transition>
@@ -46,7 +45,6 @@
 
 <script>
   import Logo from '../../components/Logo'
-  import BtnList from '../../components/BtnList'
 
   export default {
     name: "Home",
@@ -56,8 +54,26 @@
         isShow: false, //按钮列表显示/隐藏
         isShow1: false, //声明显示/隐藏
         isShow2: false, //二维码显示/隐藏
-        btnList: ['应急联动', '机电运维', '后勤管理', '安全监测', '职工服务'] //右边按钮列表
+        config: {}, //网站基本配置信息
+        btnList: [], //右边按钮列表
       }
+    },
+    mounted() {
+      let result;
+      //获取右边按钮列表
+      this.$axios.get('http://yixin.581vv.com/api/get_navs').then(res => {
+        result = res.data;
+        this.btnList = result.data;
+      }).catch(error => {
+        console.log(error);
+      });
+      //获取网站基本配置信息
+      this.$axios.get('http://yixin.581vv.com/api/config').then(res => {
+        result = res.data;
+        this.config = result.data;
+      }).catch(error => {
+        console.log(error);
+      })
     },
     methods: {
       goTo(index) {
@@ -77,7 +93,6 @@
     },
     components: {
       Logo,
-      BtnList
     }
   }
 </script>
@@ -86,9 +101,10 @@
   .home_wrap
     width: 100%;
     height: 100%;
-    background: rgba(255, 255, 255, 1);
-    background url("../../../static/images/bg.png") no-repeat
+    background-repeat no-repeat
     position relative
+    background-size 100%
+    background-image url("")
     .titleImg
       width 635px
       height 342px
@@ -128,7 +144,7 @@
           &:hover .before
             transform scaleX(100)
             background #fff
-          .before,.after
+          .before, .after
             width: 1px;
             height 1px
             position absolute
@@ -155,6 +171,9 @@
         padding 8px 18px
         box-sizing border-box
         display flex
+        .wechat
+          width 137px
+          height 137px
         .text
           margin-left 15px
           .p1
@@ -178,12 +197,12 @@
         bottom -30px
         right 40px
     .statement
-      width: 446px;
       height: 36px;
       background: rgba(255, 255, 255, 1);
       box-shadow: 0 4px 10px 0 rgba(16, 45, 106, 0.15);
       border-radius: 8px;
       line-height 36px
+      text-align: center
       font-size: 12px;
       padding 0 18px
       box-sizing border-box

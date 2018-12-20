@@ -28,6 +28,9 @@ export default new Router({
       path: '/banner',
       name: 'Banner',
       component: Banner,
+      meta:{
+        keepAlive: true
+      },
       children: [
         {path: '/one', component: One},
         {path: '/two', component: Two},

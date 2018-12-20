@@ -8,9 +8,8 @@
       <el-form-item label="省份/地址：" prop="region">
         <el-select v-model="ruleForm.region" style="width: 160px" placeholder="请选择">
           <div class="title">所在省</div>
-          <el-option v-for="item in produce" :key="item.value" :label="item.label" :value="item.value">
-            <span style="float: left">{{item.label}}</span>
-            <span style="float: right; font-size: 14px">{{ item.value }}</span>
+          <el-option v-for="(item,index) in produce" :key="index" :value="item.name">
+            <span>{{item.name}}</span>
           </el-option>
         </el-select>
       </el-form-item>
@@ -26,8 +25,7 @@
     </el-form-item>
     <el-form-item label="服务类别：" prop="type">
       <el-checkbox-group v-model="ruleForm.type">
-        <el-checkbox label="项目合作" name="type"></el-checkbox>
-        <el-checkbox label="销售代理" name="type"></el-checkbox>
+        <el-checkbox v-for="(item,index) in serviceType" :label="item.title" name="type" :key="index"></el-checkbox>
       </el-checkbox-group>
     </el-form-item>
     <el-form-item label="备注信息：" prop="desc">
@@ -42,6 +40,9 @@
 <script>
   export default {
     name: "FormTwo",
+    props: {
+      serviceType: Array
+    },
     data() {
       return {
         ruleForm: {
@@ -77,30 +78,36 @@
             {min: 2, max: 12, message: '长度在 2 到 12 个字符', trigger: 'blur'}
           ],
         },
-        produce: [
-          {value: 'Beijing', label: '北京'},
-          {value: 'Tianjin', label: '天津'},
-          {value: 'Hebei', label: '河北'},
-          {value: 'Shanxi', label: '山西'},
-          {value: 'Neimenggu', label: '内蒙古'},
-          {value: 'Jilin', label: '吉林'},
-          {value: 'Heilongjiang', label: '黑龙江'},
-          {value: 'Shanghai', label: '上海'},
-          {value: 'Jiangsu', label: '江苏'},
-          {value: 'Zhejiang', label: '浙江'},
-          {value: 'Fujian', label: '福建'},
-          {value: 'Guangdong', label: '广东'},
-          {value: 'Hainan', label: '海南'},
-          {value: 'Yunnan', label: '云南'},
-        ]
+        produce: []
       }
+    },
+    mounted() {
+      this.$axios.get('http://yixin.581vv.com/api/get_province_city').then(res => {
+        const result = res.data;
+        this.produce = result.data;
+      })
     },
     methods: {
       submitForm(formName) {
+        const {ruleForm} = this;
         this.$refs[formName].validate((valid) => {
           if (valid) {
             //填写提交表单的逻辑
-            console.log(this.ruleForm);
+            this.$axios.post('http://yixin.581vv.com/api/hospital_users', {
+              corporate_name: ruleForm.name,
+              city: ruleForm.region,
+              servicetype_id: ruleForm.type,
+              position: ruleForm.post,
+              contacts: ruleForm.man,
+              phone: ruleForm.phone,
+              remarks: ruleForm.desc
+            }).then(res => {
+              const result = res.data;
+              alert(result.msg);
+              this.$emit('close', false);
+            }).catch(error => {
+              console.log(error);
+            })
           } else {
             console.log('error submit!!');
             return false;
@@ -121,11 +128,12 @@
 
   .btn_right
     text-align right
+
   .title
     line-height 30px
-    font-size:16px;
-    font-family:FZLTZHK--GBK1-0;
-    font-weight:600;
-    color:rgba(53,53,53,1);
+    font-size: 16px;
+    font-family: FZLTZHK--GBK1-0;
+    font-weight: 600;
+    color: rgba(53, 53, 53, 1);
     padding 0 20px
 </style>

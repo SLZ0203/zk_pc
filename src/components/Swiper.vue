@@ -1,10 +1,10 @@
 <!--轮播图组件-->
 <template>
-  <div class="swiper-container">
+  <div class="swiper-container" v-show="banner">
     <div class="swiper-wrapper">
       <div class="swiper-slide" v-for="(item,index) in list" :key="index">
         <keep-alive>
-          <component :is="item.component"></component>
+          <component :is="item.component" :banner="banner"></component>
         </keep-alive>
       </div>
     </div>
@@ -33,6 +33,9 @@
 
   export default {
     name: "Swiper",
+    props: {
+      banner: Array
+    },
     data() {
       return {
         list: [
@@ -47,7 +50,8 @@
     mounted() {
       var mySwiper = new Swiper('.swiper-container', {
         //loop: true,
-        //autoplay:true,
+        autoplay: true,
+        slideToClickedSlide: true,
         // 如果需要分页器
         pagination: {el: '.swiper-pagination',},
         // 如果需要前进后退按钮

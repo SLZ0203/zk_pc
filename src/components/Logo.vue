@@ -1,13 +1,16 @@
 <!--页面LOGO组件-->
 <template>
-  <h1 class="logoImg" @click="$router.replace('/home')">
-    <img src="../../static/images/logo.png">
+  <h1 class="logoImg" @click="$router.replace('/home')" v-if="logoImg">
+    <img :src="'http://yixin.581vv.com'+logoImg">
   </h1>
 </template>
 
 <script>
   export default {
-    name: "Logo"
+    name: "Logo",
+    props: {
+      logoImg: String
+    }
   }
 </script>
 

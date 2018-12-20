@@ -1,9 +1,9 @@
 <!--轮播图页面-->
 <template>
   <section class="banner_page">
-    <Logo/>
-    <BtnList/>
-    <Swiper/>
+    <Logo :logoImg="config.logo"/>
+    <BtnList :btnList="btnList"/>
+    <Swiper :banner="banner"/>
     <div class="from_wrap" v-show="isShow">
       <div class="from_hd">
         <div class="choose">
@@ -14,9 +14,9 @@
       </div>
       <div class="from_bd">
         <!--医院用户-->
-        <form-one v-if="nowIndex===0" v-bind:isShow="isShow"/>
+        <form-one v-if="nowIndex===0" v-bind:isShow="isShow" :focus="focus" @close="toClose"/>
         <!--合作单位-->
-        <form-two v-else/>
+        <form-two v-else :serviceType="serviceType"/>
       </div>
     </div>
     <img src="../../../static/images/more.png" class="more" @click="isShow=true">
@@ -39,7 +39,50 @@
       return {
         isShow: false,//表单的显示/隐藏
         nowIndex: 0,
+        btnList: [], //右边按钮列表
+        banner: [],
+        config: {}, //网站基本配置信息
+        focus: [],//关注重点
+        serviceType: [], //服务类型
       };
+    },
+    mounted() {
+      let result;
+      //获取右边按钮列表
+      this.$axios.get('http://yixin.581vv.com/api/get_navs').then(res => {
+        result = res.data.data;
+        const arr1 = [];
+        const arr2 = [];
+        result.forEach(item => {
+          arr1.push(item.name);
+          arr2.push(item.thumb);
+          this.btnList = arr1;
+          this.banner = arr2;
+        })
+      }).catch(error => {
+        console.log(error);
+      });
+      //获取网站基本配置信息
+      this.$axios.get('http://yixin.581vv.com/api/config').then(res => {
+        result = res.data;
+        this.config = result.data;
+      }).catch(error => {
+        console.log(error);
+      });
+      //获取关注重点
+      this.$axios.get('http://yixin.581vv.com/api/focus').then(res => {
+        result = res.data;
+        this.focus = result.data;
+      }).catch(error => {
+        console.log(error);
+      });
+      //获取服务类型
+      this.$axios.get('http://yixin.581vv.com/api/service_type').then(res => {
+        result = res.data;
+        this.serviceType = result.data;
+      }).catch(error => {
+        console.log(error);
+      });
     },
     methods: {
       toClose(b) {
@@ -76,7 +119,7 @@
       position absolute
       top 50%
       left 50%
-      transform translate(-50%,-50%)
+      transform translate(-50%, -50%)
       z-index 1000
       background: rgba(255, 255, 255, 1);
       box-shadow: 0 4px 10px 0 rgba(16, 45, 106, 0.15);

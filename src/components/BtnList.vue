@@ -18,11 +18,13 @@
 <script>
   export default {
     name: "BtnList",
+    props:{
+      btnList: Array
+    },
     data() {
       return {
         isShow: false, //按钮列表切换显示隐藏
         num: '',
-        btnList: ['应急联动', '机电运维', '后勤管理', '安全监测', '职工服务',] //右边按钮列表
       }
     },
     mounted() {
@@ -84,7 +86,7 @@
       &:hover .before
         transform scaleX(100)
         background #fff
-      .before,.after
+      .before, .after
         width: 1px;
         height 1px
         position absolute
@@ -94,6 +96,7 @@
         top -1px
       .after
         bottom: -1px;
+
   .fade-enter-active, .fade-leave-active
     transition: opacity .8s
 

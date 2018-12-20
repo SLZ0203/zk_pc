@@ -1,7 +1,7 @@
 <!--页面一-->
 <template>
   <div class="outer_wrap">
-    <img src="../../../static/images/img.png">
+    <img :src="'http://yixin.581vv.com' + banner[0]">
     <div class="blank_wrap"></div>
   </div>
 </template>
@@ -9,11 +9,18 @@
 <script>
   export default {
     name: "One",
-    data(){
-      return{
-        num: this.$route.query.num
+    props: {
+      banner: Array
+    },
+    data() {
+      return {
+        num: this.$route.query.num,
       }
     },
+    mounted() {
+      const arr = this.banner.slice(0, 1);
+      console.log(arr);
+    }
   }
 </script>
 
