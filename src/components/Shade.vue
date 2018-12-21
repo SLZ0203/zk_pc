@@ -9,7 +9,7 @@
   export default {
     name: "Shad",
     props: {
-      isShow: Boolean
+      fromShow: Boolean
     },
     methods:{
       close(){

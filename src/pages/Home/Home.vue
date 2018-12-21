@@ -62,6 +62,7 @@
       let result;
       //获取右边按钮列表
       this.$axios.get('http://yixin.581vv.com/api/get_navs').then(res => {
+        console.log(res);
         result = res.data;
         this.btnList = result.data;
       }).catch(error => {

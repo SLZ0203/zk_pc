@@ -18,7 +18,7 @@
 <script>
   export default {
     name: "BtnList",
-    props:{
+    props: {
       btnList: Array
     },
     data() {
@@ -28,23 +28,11 @@
       }
     },
     mounted() {
-      this.$root.eventHub.$on('slideTab', this.slideTab);
     },
     methods: {
       goTo(index) {
         this.num = index;
-        //点击导航按钮向swiper组件发射index
-        this.$root.eventHub.$emit('changeTab', index);
       },
-      slideTab(index) {
-        this.num = index;
-        let href = index === 0 ? '/one' :
-          index === 1 ? '/two' :
-            index === 2 ? '/three' :
-              index === 3 ? '/four' :
-                index === 4 ? '/five' : '/one';
-        this.$router.push(href)
-      }
     },
   }
 </script>
@@ -57,49 +45,46 @@
     z-index 100
     width 106px
     text-align: center
-
-  .menuBtn
-    width 87px
-    height 87px
-    cursor pointer
-    margin-bottom 37px
-
-  .btn_list
-    .btn_item
-      width 100%
-      height 34px
-      text-align: center
-      line-height 34px
-      font-size: 20px;
-      font-family: FZLTZHK--GBK1-0;
-      font-weight: 600;
-      color: rgba(255, 255, 255, 1)
-      margin-bottom 30px
-      box-sizing border-box
+    .menuBtn
+      width 87px
+      height 87px
       cursor pointer
-      position relative
-      &.on
-        border: 1px solid rgba(255, 255, 255, 1)
-      &:hover .after
-        transform scaleX(100)
-        background #fff
-      &:hover .before
-        transform scaleX(100)
-        background #fff
-      .before, .after
-        width: 1px;
-        height 1px
-        position absolute
-        left 50%
-        transition: all 280ms ease-in-out;
-      .before
-        top -1px
-      .after
-        bottom: -1px;
+      margin-bottom 37px
+    .btn_list
+      .btn_item
+        width 100%
+        height 34px
+        text-align: center
+        line-height 34px
+        font-size: 20px;
+        font-family: FZLTZHK--GBK1-0;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 1)
+        margin-bottom 30px
+        box-sizing border-box
+        cursor pointer
+        position relative
+        &.on
+          border: 1px solid rgba(255, 255, 255, 1)
+        &:hover .after
+          transform scaleX(100)
+          background #fff
+        &:hover .before
+          transform scaleX(100)
+          background #fff
+        .before, .after
+          width: 1px;
+          height 1px
+          position absolute
+          left 50%
+          transition: all 280ms ease-in-out;
+        .before
+          top -1px
+        .after
+          bottom: -1px;
 
-  .fade-enter-active, .fade-leave-active
-    transition: opacity .8s
-
-  .fade-enter, .fade-leave-active
-    opacity: 0
+    .fade-enter-active, .fade-leave-active
+      transition: opacity .8s
+    .fade-enter, .fade-leave-active
+      opacity: 0
 </style>

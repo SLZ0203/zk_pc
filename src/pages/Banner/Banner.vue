@@ -2,33 +2,45 @@
 <template>
   <section class="banner_page">
     <Logo :logoImg="config.logo"/>
-    <BtnList :btnList="btnList"/>
-    <Swiper :banner="banner"/>
-    <div class="from_wrap" v-show="isShow">
+    <div class="btn_wrap">
+      <img src="../../../static/images/btn-menu.png" class="menuBtn" @click="btnShow=!btnShow">
+      <transition name="fade">
+        <ul class="btn_list" v-show="btnShow">
+          <li class="btn_item" v-for="(btn, index) in btnList" :key="index" @click="goTo(index)"
+              :class="{on:btnNum===index}">
+            <div class="before"></div>
+            {{btn}}
+            <div class="after"></div>
+          </li>
+        </ul>
+      </transition>
+    </div>
+    <transition name="fade">
+      <router-view/>
+    </transition>
+    <div class="from_wrap"><!-- v-show="fromShow"-->
       <div class="from_hd">
         <div class="choose">
           <span :class="{active:nowIndex===0}" @click="nowIndex=0">我是医院用户</span>
           <span :class="{active:nowIndex===1}" @click="nowIndex=1">我是合作单位</span>
         </div>
-        <img src="../../../static/images/ic-close.png" @click="isShow=false">
+        <img src="../../../static/images/ic-close.png" @click="fromShow=false">
       </div>
       <div class="from_bd">
         <!--医院用户-->
-        <form-one v-if="nowIndex===0" v-bind:isShow="isShow" :focus="focus" @close="toClose"/>
+        <form-one v-if="nowIndex===0" v-bind:fromShow="fromShow" :focus="focus" @close="toClose"/>
         <!--合作单位-->
         <form-two v-else :serviceType="serviceType"/>
       </div>
     </div>
-    <img src="../../../static/images/more.png" class="more" @click="isShow=true">
-    <Shade v-show="isShow" v-bind:isShow="isShow" @close="toClose"/>
+    <img src="../../../static/images/more.png" class="more" @click="fromShow=true">
+    <Shade v-bind:fromShow="fromShow" @close="toClose"/><!-- v-show="fromShow" -->
   </section>
 </template>
 
 
 <script>
   import Logo from '../../components/Logo'
-  import BtnList from '../../components/BtnList'
-  import Swiper from '../../components/Swiper'
   import FormOne from '../../components/FormOne'
   import FormTwo from '../../components/FormTwo'
   import Shade from '../../components/Shade'
@@ -37,10 +49,11 @@
     name: "Banner",
     data() {
       return {
-        isShow: false,//表单的显示/隐藏
+        btnShow: false, //按钮列表显示/隐藏
+        btnNum: 0,
+        fromShow: false,//表单的显示/隐藏
         nowIndex: 0,
         btnList: [], //右边按钮列表
-        banner: [],
         config: {}, //网站基本配置信息
         focus: [],//关注重点
         serviceType: [], //服务类型
@@ -51,14 +64,11 @@
       //获取右边按钮列表
       this.$axios.get('http://yixin.581vv.com/api/get_navs').then(res => {
         result = res.data.data;
-        const arr1 = [];
-        const arr2 = [];
+        const arr = [];
         result.forEach(item => {
-          arr1.push(item.name);
-          arr2.push(item.thumb);
-          this.btnList = arr1;
-          this.banner = arr2;
+          arr.push(item.name);
         })
+        this.btnList = arr
       }).catch(error => {
         console.log(error);
       });
@@ -86,13 +96,25 @@
     },
     methods: {
       toClose(b) {
-        this.isShow = b
+        this.fromShow = b
       },
+      goTo(index) {
+        this.btnNum = index;
+        if (this.btnNum === 0) {
+          return this.$router.push('/one')
+        } else if (this.btnNum === 1) {
+          return this.$router.push('/two')
+        } else if (this.btnNum === 2) {
+          return this.$router.push('/three')
+        } else if (this.btnNum === 3) {
+          return this.$router.push('/four')
+        } else if (this.btnNum === 4) {
+          return this.$router.push('/five')
+        }
+      }
     },
     components: {
       Logo,
-      BtnList,
-      Swiper,
       FormOne,
       FormTwo,
       Shade,
@@ -105,15 +127,55 @@
     height: 100%;
     background: rgba(255, 255, 255, 1);
     position relative
-    .button_wrap
+    .btn_wrap
       position absolute
-      left 50%
-      transform translateX(-50%)
-      bottom 21px
+      top 51px
+      right 52px
       z-index 100
-      width 560px
-      display flex
-      justify-content space-between
+      width 106px
+      text-align: center
+      .menuBtn
+        width 87px
+        height 87px
+        cursor pointer
+        margin-bottom 37px
+      .btn_list
+        .btn_item
+          width 100%
+          height 34px
+          text-align: center
+          line-height 34px
+          font-size: 20px;
+          font-family: FZLTZHK--GBK1-0;
+          font-weight: 600;
+          color: rgba(255, 255, 255, 1)
+          margin-bottom 30px
+          box-sizing border-box
+          cursor pointer
+          position relative
+          &.on
+            border: 1px solid rgba(255, 255, 255, 1)
+          &:hover .after
+            transform scaleX(100)
+            background #fff
+          &:hover .before
+            transform scaleX(100)
+            background #fff
+          .before, .after
+            width: 1px;
+            height 1px
+            position absolute
+            left 50%
+            transition: all 280ms ease-in-out;
+          .before
+            top -1px
+          .after
+            bottom: -1px;
+
+      .fade-enter-active, .fade-leave-active
+        transition: opacity .8s
+      .fade-enter, .fade-leave-active
+        opacity: 0
     .from_wrap
       width: 676px;
       position absolute
@@ -182,4 +244,8 @@
       position absolute
       bottom 20px
       right 51px
+    .fade-enter-active, .fade-leave-avtive
+      transition: opacity 1s
+    .fade-enter, .fade-leave-to
+      opacity: 0
 </style>

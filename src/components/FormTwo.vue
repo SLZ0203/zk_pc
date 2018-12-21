@@ -93,7 +93,7 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             //填写提交表单的逻辑
-            this.$axios.post('http://yixin.581vv.com/api/hospital_users', {
+            this.$axios.post('http://yixin.581vv.com/api/cooperation_unit', {
               corporate_name: ruleForm.name,
               city: ruleForm.region,
               servicetype_id: ruleForm.type,
