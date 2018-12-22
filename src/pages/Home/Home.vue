@@ -45,6 +45,7 @@
 
 <script>
   import Logo from '../../components/Logo'
+  import {baseUrl} from '../../api'
 
   export default {
     name: "Home",
@@ -61,7 +62,7 @@
     mounted() {
       let result;
       //获取右边按钮列表
-      this.$axios.get('http://yixin.581vv.com/api/get_navs').then(res => {
+      this.$axios.get(baseUrl + '/api/get_navs').then(res => {
         console.log(res);
         result = res.data;
         this.btnList = result.data;
@@ -69,7 +70,7 @@
         console.log(error);
       });
       //获取网站基本配置信息
-      this.$axios.get('http://yixin.581vv.com/api/config').then(res => {
+      this.$axios.get(baseUrl + '/api/config').then(res => {
         result = res.data;
         this.config = result.data;
       }).catch(error => {

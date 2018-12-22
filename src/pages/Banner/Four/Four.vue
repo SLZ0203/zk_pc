@@ -24,6 +24,8 @@
 <script>
   import Swiper from 'swiper'
   import 'swiper/dist/css/swiper.min.css'
+  import {baseUrl} from '../../../api'
+
   export default {
     data() {
       return {
@@ -32,7 +34,7 @@
     },
     mounted() {
       //获取轮播图图片
-      this.$axios.get('http://yixin.581vv.com/api/get_navs').then(res => {
+      this.$axios.get(baseUrl + '/api/get_navs').then(res => {
         const result = res.data.data;
         result.forEach(item => {
           this.banner.push(item.images)

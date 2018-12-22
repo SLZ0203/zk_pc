@@ -18,7 +18,7 @@
     <transition name="fade">
       <router-view/>
     </transition>
-    <div class="from_wrap"><!-- v-show="fromShow"-->
+    <div class="from_wrap" v-show="fromShow">
       <div class="from_hd">
         <div class="choose">
           <span :class="{active:nowIndex===0}" @click="nowIndex=0">我是医院用户</span>
@@ -28,13 +28,13 @@
       </div>
       <div class="from_bd">
         <!--医院用户-->
-        <form-one v-if="nowIndex===0" v-bind:fromShow="fromShow" :focus="focus" @close="toClose"/>
+        <form-one v-if="nowIndex===0" v-bind:fromShow="fromShow" @close="toClose" :focus="focus" :produce="produce"/>
         <!--合作单位-->
-        <form-two v-else :serviceType="serviceType"/>
+        <form-two v-else :serviceType="serviceType" :produce="produce"/>
       </div>
     </div>
     <img src="../../../static/images/more.png" class="more" @click="fromShow=true">
-    <Shade v-bind:fromShow="fromShow" @close="toClose"/><!-- v-show="fromShow" -->
+    <Shade v-bind:fromShow="fromShow" @close="toClose" v-show="fromShow"/>
   </section>
 </template>
 
@@ -44,6 +44,7 @@
   import FormOne from '../../components/FormOne'
   import FormTwo from '../../components/FormTwo'
   import Shade from '../../components/Shade'
+  import {baseUrl} from '../../api'
 
   export default {
     name: "Banner",
@@ -55,14 +56,15 @@
         nowIndex: 0,
         btnList: [], //右边按钮列表
         config: {}, //网站基本配置信息
-        focus: [],//关注重点
+        focus: [], //关注重点
         serviceType: [], //服务类型
+        produce: [] //省市列表
       };
     },
     mounted() {
       let result;
       //获取右边按钮列表
-      this.$axios.get('http://yixin.581vv.com/api/get_navs').then(res => {
+      this.$axios.get(baseUrl + '/api/get_navs').then(res => {
         result = res.data.data;
         const arr = [];
         result.forEach(item => {
@@ -73,21 +75,26 @@
         console.log(error);
       });
       //获取网站基本配置信息
-      this.$axios.get('http://yixin.581vv.com/api/config').then(res => {
+      this.$axios.get(baseUrl + '/api/config').then(res => {
         result = res.data;
         this.config = result.data;
       }).catch(error => {
         console.log(error);
       });
-      //获取关注重点
-      this.$axios.get('http://yixin.581vv.com/api/focus').then(res => {
+      //获取省份
+      this.$axios.get(baseUrl + '/api/get_province_city').then(res => {
         result = res.data;
-        this.focus = result.data;
+        this.produce = result.data;
+      });
+      //获取关注重点
+      this.$axios.get(baseUrl + '/api/focus').then(res => {
+        result = res.data.data;
+        this.focus = result;
       }).catch(error => {
         console.log(error);
       });
       //获取服务类型
-      this.$axios.get('http://yixin.581vv.com/api/service_type').then(res => {
+      this.$axios.get(baseUrl + '/api/service_type').then(res => {
         result = res.data;
         this.serviceType = result.data;
       }).catch(error => {
