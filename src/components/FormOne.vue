@@ -115,6 +115,9 @@
           this.typeShow = true
         }
         this.$refs[formName].validate((valid) => {
+          console.log(this.ruleForm);
+          console.log(this.regionId);
+          console.log(this.typeId);
           if (valid) {
             //填写提交表单的逻辑
             this.$axios.post('http://yixin.581vv.com/api/hospital_users', {
