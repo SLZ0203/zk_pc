@@ -30,7 +30,7 @@
         <!--医院用户-->
         <form-one v-if="nowIndex===0" v-bind:fromShow="fromShow" @close="toClose" :focus="focus" :produce="produce"/>
         <!--合作单位-->
-        <form-two v-else :serviceType="serviceType" :produce="produce"/>
+        <form-two v-else :serviceType="serviceType" :produce="produce" @close="toClose"/>
       </div>
     </div>
     <img src="../../../static/images/more.png" class="more" @click="fromShow=true">
@@ -76,8 +76,9 @@
       });
       //获取网站基本配置信息
       this.$axios.get(baseUrl + '/api/config').then(res => {
-        result = res.data;
-        this.config = result.data;
+        result = res.data.data;
+        result.logo = baseUrl + result.logo;
+        this.config = result;
       }).catch(error => {
         console.log(error);
       });
@@ -249,8 +250,8 @@
       cursor pointer
       z-index 100
       position absolute
-      bottom 20px
-      right 51px
+      bottom 2%
+      right 2.6%
     .fade-enter-active, .fade-leave-avtive
       transition: opacity 1s
     .fade-enter, .fade-leave-to

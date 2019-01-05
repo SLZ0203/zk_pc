@@ -40,8 +40,8 @@
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   .btn_wrap
     position absolute
-    top 51px
-    right 52px
+    top 4.7%
+    right 2.6%
     z-index 100
     width 106px
     text-align: center

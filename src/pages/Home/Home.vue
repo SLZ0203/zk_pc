@@ -1,6 +1,6 @@
 <!--首页-->
 <template>
-  <section class="home_wrap" :style="{backgroundImage:'url('+'http://yixin.581vv.com'+config.background_pic+')'}"
+  <section class="home_wrap" :style="{backgroundImage:'url('+'http://www.sinomis.com'+config.background_pic+')'}"
            v-if="config">
     <Logo :logoImg="config.logo"/>
     <img src="../../../static/images/标题.png" class="titleImg">
@@ -19,7 +19,7 @@
     <transition name="fade">
       <div class="code_wrap" v-show="isShow2">
         <div class="top_wrap">
-          <img :src="'http://yixin.581vv.com'+config.weixin_qr_code" class="wechat">
+          <img :src="'http://www.sinomis.com'+config.weixin_qr_code" class="wechat">
           <div class="text">
             <p class="p1">关注公众号</p>
             <p class="p2">快速，及时了解
@@ -35,7 +35,6 @@
         <div class="sanjiao"></div>
       </div>
     </transition>
-    <div class="test"></div>
     <div class="icon_wrap">
       <img src="../../../static/images/ic-版权.png" @mouseenter="isShow1=true" @mouseleave="isShow1=false">
       <img src="../../../static/images/ic-二维码.png" @mouseenter="isShow2=true" @mouseleave="isShow2=false">
@@ -63,7 +62,6 @@
       let result;
       //获取右边按钮列表
       this.$axios.get(baseUrl + '/api/get_navs').then(res => {
-        console.log(res);
         result = res.data;
         this.btnList = result.data;
       }).catch(error => {
@@ -71,8 +69,9 @@
       });
       //获取网站基本配置信息
       this.$axios.get(baseUrl + '/api/config').then(res => {
-        result = res.data;
-        this.config = result.data;
+        result = res.data.data;
+        result.logo = baseUrl + result.logo;
+        this.config = result;
       }).catch(error => {
         console.log(error);
       })
@@ -105,7 +104,7 @@
     height: 100%;
     background-repeat no-repeat
     position relative
-    background-size 100%
+    background-size 100% 100%
     background-image url("")
     .titleImg
       width 635px
@@ -116,8 +115,8 @@
       transform translate(-50%, -50%)
     .btn_wrap
       position absolute
-      top 51px
-      right 52px
+      top 4.7%
+      right 2.6%
       z-index 100
       width 106px
       text-align: center
@@ -162,8 +161,8 @@
       opacity: 0
     .code_wrap
       position absolute
-      bottom 112px
-      right 59px
+      bottom 12%
+      right 1.5%
       .top_wrap
         width: 330px;
         height: 153px;
@@ -212,8 +211,8 @@
       font-weight: 400;
       color: rgba(53, 53, 53, 1);
       position absolute
-      bottom 112px
-      right 125px
+      bottom 12%
+      right 5.5%
       &.left
         right 426px
       .line
@@ -232,8 +231,8 @@
         right 40px
     .icon_wrap
       position absolute
-      bottom 39px
-      right 92px
+      bottom 3.6%
+      right 3.6%
       img
         cursor pointer
         margin-left 20px

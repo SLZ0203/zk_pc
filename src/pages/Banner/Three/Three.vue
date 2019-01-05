@@ -2,8 +2,8 @@
   <section class="three_wrap">
     <div class="swiper-container">
       <div class="swiper-wrapper">
-        <div class="swiper-slide" v-for="(item,index) in banner[2]" :key="index">
-          <img :src="'http://yixin.581vv.com/upload/'+item.image">
+        <div class="swiper-slide" v-for="(item,index) in banner" :key="index">
+          <img :src="item.image">
         </div>
       </div>
       <!-- 如果需要分页器 -->
@@ -37,8 +37,13 @@
       //获取轮播图图片
       this.$axios.get(baseUrl + '/api/get_navs').then(res => {
         const result = res.data.data;
-        result.forEach(item => {
-          this.banner.push(item.images)
+        result.forEach((item, index) => {
+          if (index === 2) {
+            item.images.forEach(item => {
+              item.image = baseUrl + '/upload/' + item.image
+            });
+            this.banner = item.images
+          }
         });
         this._initBanner()
       }).catch(error => {
@@ -82,7 +87,7 @@
       justify-content space-between
       position absolute
       z-index 10
-      bottom 21px
+      bottom 3%
       left 50%
       transform translateX(-50%)
 </style>
